@@ -1,0 +1,28 @@
+// imageselect styles
+#imageselect
+    background-color rgba(0, 0, 0, 0.2)
+    width 100%
+    display flex
+    justify-content: center
+
+#imageselect-input
+    padding 10px
+
+#capture-icon
+    width 40px
+    height 40px
+    color white
+    padding 10px
+    cursor pointer
+
+#imageselect.cam
+    #imageselect-input
+        display: none
+    #capture-icon
+        display: block
+
+#imageselect.image
+    #imageselect-input
+        display: block
+    #capture-icon
+        display: none
