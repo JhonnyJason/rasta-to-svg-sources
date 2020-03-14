@@ -10,72 +10,129 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+#region localModules
 source = null
-imageSelect = null
-filterSettings = null
-
-############################################################
-activeSource = ""
-activeFilterSettings = false
+output = null
+post = null
+sourcefilter = null
+outputfilter = null
+postprocess = null
+layoutmanager = null
+#endregion
 
 ############################################################
 menumodule.initialize = () ->
     log "menumodule.initialize"
     source = allModules.sourceimagemodule
-    imageSelect = allModules.imageselectmodule
-    filterSettings = allModules.filtersettingsmodule
+    output = allModules.outputimagemodule
+    post = allModules.postprocessimagemodule
+    sourcefilter = allModules.sourcefiltermodule
+    outputfilter = allModules.outputfiltermodule
+    postprocess = allModules.postprocessmodule
+    layoutmanager = allModules.layoutmanagermodule
 
-    # filterSettingsIcon = document.getElementById("filter-settings-icon")
+    #region addingEventListeners
+    viewAllButton.addEventListener("click", vieAllButtonClicked)
+    
+    imageSelectButton.addEventListener("click", imageSelectButtonClicked)
+    camImageButton.addEventListener("click", camImageButtonClicked)
+    toggleSourceFilterButton.addEventListener("click", toggleSourceFilterButtonClicked)
 
-    camIcon.addEventListener("click", camIconClicked)
-    imageIcon.addEventListener("click", imageIconClicked)
-    # filterSettingsIcon.addEventListener("click", filterSettingsIconClicked)
+    outputImageButton.addEventListener("click", outputImageButtonClicked)
+    toggleOutputFilterButton.addEventListener("click", toggleOutputFilterButtonClicked)
 
-    imageIcon.classList.add("active")
+    postProcessButton.addEventListener("click", postProcessButtonClicked)
+    toggleProcessSettingsButton.addEventListener("click", toggleProcessSettingsButtonClicked)
+    #endregion
     return
     
 ############################################################
+#region internalFunctions
 setActiveSource = (label) ->
     log "setActiveSource"
-    imageSelect.setMode(label)
     if label == "image"
-        return if activeSource == "image"
-        source.setImageAsSource()
-        camIcon.classList.remove("active")
-        imageIcon.classList.add("active")
-        activeSource = "image"
+        imageSelectButton.className = "active"
+        camImageButton.className = ""
         return
     if label == "cam"
-        return if activeSource == "cam"
-        source.setCamAsSource()
-        imageIcon.classList.remove("active")
-        camIcon.classList.add("active")
-        activeSource = "cam"
+        camImageButton.className = "active"
+        imageSelectButton.className = ""
         return
     return
 
 ############################################################
-camIconClicked = ->
-    log "camIconClicked"
-    setActiveSource("cam")
+#region eventHandlers
+vieAllButtonClicked = ->
+    log "vieAllButtonClicked"
+    layoutmanager.viewAll()
     return
 
-imageIconClicked = ->
-    log "imageIconClicked"
-    setActiveSource("image")
+############################################################
+imageSelectButtonClicked = ->
+    log "imageSelectButtonClicked"
+    activeSource = await source.setSource("image")
+    setActiveSource(activeSource)
+    layoutmanager.viewSource()
     return
 
-filterSettingsIconClicked = ->
+camImageButtonClicked = ->
+    log "camImageButtonClicked"
+    activeSource = await source.setSource("cam")
+    setActiveSource(activeSource)
+    layoutmanager.viewSource()
+    return
+
+toggleSourceFilterButtonClicked = ->
     log "filterSettingsIconClicked"
-    if activeFilterSettings == true
-        filterSettings.setActive(false)
-        filterSettingsIcon.classList.remove("active")
-        activeFilterSettings = false
+    isHidden = sourcefilter.toggleHidden()
+    if isHidden
+        toggleSourceFilterButton.classList.remove("active")
+    else
+        toggleSourceFilterButton.classList.add("active")
+    return
+
+############################################################
+outputImageButtonClicked = ->
+    log "outputImageButtonClicked"
+    layoutmanager.viewOutput()
+    return
+
+toggleOutputFilterButtonClicked = ->
+    log "toggleOutputFilterButtonClicked"
+    isHidden = outputfilter.toggleHidden()
+    if isHidden
+        toggleOutputFilterButton.classList.remove("active")
+    else
+        toggleOutputFilterButton.classList.add("active")
+    return
+
+############################################################
+postProcessButtonClicked = ->
+    log "postProcessButtonClicked"
+    layoutmanager.viewPostProcess()
+    return
+
+toggleProcessSettingsButtonClicked = ->
+    log "toggleProcessSettingsButtonClicked"
+    isHidden = postprocess.toggleHiddenControls()
+    if isHidden
+        toggleProcessSettingsButton.classList.remove("active")
+    else
+        toggleProcessSettingsButton.classList.add("active")
+    return
+
+#endregion
+
+#endregion
+
+############################################################
+menumodule.setViewAllButtonActive = (activeness) ->
+    log "menumodule.setViewAllButtonActive"
+    if activeness ==  true
+        viewAllButton.className = "active"
         return
-    if activeFilterSettings == false
-        filterSettings.setActive(true)
-        filterSettingsIcon.classList.add("active")
-        activeFilterSettings = true    
+    if activeness == false
+        viewAllButton.className = ""
         return
     return
 

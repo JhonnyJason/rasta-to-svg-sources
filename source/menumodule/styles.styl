@@ -1,11 +1,12 @@
 // menu styles
 menu-icon-size = 30px
 menu-padding = 10px
-icon-border-width = 2px
+
+separator-width = 3px
 
 menu-height = (menu-icon-size + (2 * menu-padding))
 
-#menu
+#menu-bar
     padding menu-padding
     width: 100%
     position fixed
@@ -15,20 +16,27 @@ menu-height = (menu-icon-size + (2 * menu-padding))
     background-color alpha(color-dark, 0.2)
     box-sizing: border-box
     
+    button
+        margin 0
+        padding 0
+        width: menu-icon-size
+        height: menu-icon-size
+        border none
+        background-color: transparent
+        cursor: pointer
+
     svg
-        // border-radius 3px
-        // border solid icon-border-width alpha(color-dark, 0.2)
         color alpha(color-dark, 0.4)
         width: menu-icon-size
         height: menu-icon-size
-        box-sizing: border-box
-        cursor: pointer
+    
     .active
-        color color-dark
+        svg
+            color color-dark
         // border-color color-dark
 
     .separator
         height menu-icon-size
-        width icon-border-width
+        width separator-width
         background-color: color-dark
         margin 0 7px

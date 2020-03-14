@@ -1,8 +1,8 @@
-filtersettingsmodule = {name: "filtersettingsmodule"}
+sourcefiltermodule = {name: "sourcefiltermodule"}
 ############################################################
 #region printLogFunctions
 log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["filtersettingsmodule"]?  then console.log "[filtersettingsmodule]: " + arg
+    if allModules.debugmodule.modulesToDebug["sourcefiltermodule"]?  then console.log "[sourcefiltermodule]: " + arg
     return
 ostr = (obj) -> JSON.stringify(obj, null, 4)
 olog = (obj) -> log "\n" + ostr(obj)
@@ -11,17 +11,6 @@ print = (arg) -> console.log(arg)
 
 ############################################################
 transform = null
-
-############################################################
-#region HTMLElements
-filtersettings = null
-blurInput = null
-contrastInput = null
-saturateInput = null
-grayscaleInput = null
-invertInput = null
-resetButton = null
-#endregion
 
 ############################################################
 defaultContextConfig = 
@@ -33,30 +22,26 @@ defaultContextConfig =
 contextConfigObject = Object.assign({}, defaultContextConfig)
 
 ############################################################
-filtersettingsmodule.initialize = () ->
-    log "filtersettingsmodule.initialize"
+isHidden = true
+
+############################################################
+sourcefiltermodule.initialize = () ->
+    log "sourcefiltermodule.initialize"
     transform = allModules.transformmodule
 
-    filtersettings = document.getElementById("filtersettings")
-    blurInput = document.getElementById("blur-input")
-    contrastInput = document.getElementById("contrast-input")
-    saturateInput = document.getElementById("saturate-input")
-    grayscaleInput = document.getElementById("grayscale-input")
-    invertInput = document.getElementById("invert-input")
-    resetButton = document.getElementById("reset-button")
+    blurInput.addEventListener("change", blurInputChanged)
+    contrastInput.addEventListener("change", contrastInputChanged)
+    saturateInput.addEventListener("change", saturateInputChanged)
+    grayscaleInput.addEventListener("change", grayscaleInputChanged)
+    invertInput.addEventListener("change", invertInputChanged)
+    sourcefilterResetButton.addEventListener("click", resetButtonClicked)
 
-    # blurInput.addEventListener("change", blurInputChanged)
-    # contrastInput.addEventListener("change", contrastInputChanged)
-    # saturateInput.addEventListener("change", saturateInputChanged)
-    # grayscaleInput.addEventListener("change", grayscaleInputChanged)
-    # invertInput.addEventListener("change", invertInputChanged)
-    # resetButton.addEventListener("click", resetButtonClicked)
-
-    # assignCurrentValues()
-    # transform.adjustContextFilter(contextConfigObject)
+    assignCurrentValues()
+    transform.adjustContextFilter(contextConfigObject)
     return
 
 ############################################################
+#region internalFunctions
 resetValues = ->
     log "resetValues"
     contextConfigObject = Object.assign({}, defaultContextConfig)
@@ -122,11 +107,17 @@ resetButtonClicked = ->
     return
 #endregion
 
-############################################################
-filtersettingsmodule.setActive = (activeness) ->
-    log "filtersettingsmodule.setActive"
-    if activeness then filtersettings.classList.remove("hidden")
-    else filtersettings.classList.add("hidden")
-    return
+#endregion
 
-module.exports = filtersettingsmodule
+############################################################
+sourcefiltermodule.toggleHidden = ->
+    log "sourcefiltermodule.toggleHidden"
+    if isHidden
+        sourcefilterControl.className = ""
+        isHidden = false
+    else
+        sourcefilterControl.className = "hidden"
+        isHidden = true
+    return isHidden
+
+module.exports = sourcefiltermodule

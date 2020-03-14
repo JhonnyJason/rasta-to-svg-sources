@@ -1,9 +1,8 @@
 /*==========================================================
 Global variables and styles
 ==========================================================*/
-max-content-width = 950px
-inner-content-width = 750px
-mobile-side-padding = 15px
+canvas-size = 300px
+
 /*==========================================================
 CD color variables
 ==========================================================*/
@@ -48,11 +47,19 @@ p
     letter-spacing: normal
     margin-bottom 10px
 
-ul
-    list-style-type: circle
-    list-style-position: inside
-    margin-bottom 50px
-
 /*==========================================================
 Global Element Style
 ==========================================================*/
+
+.image-block
+    width: 100%
+    margin-top 20px
+    margin-bottom: 20px
+    position relative
+    height canvas-size
+
+.center-absolute-x
+    position absolute
+    top 0
+    left 50%
+    transform translateX(-50%)

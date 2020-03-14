@@ -1,0 +1,10 @@
+//- sourceimage structure
+#sourceimage-content-frame
+    .image-block
+        canvas#sourceimage-canvas
+    include ../imageselectmodule/imageselect.pug
+    include ../sourcefiltermodule/sourcefilter-control.pug
+
+//- hidden Elements
+img#hidden-source-image(src='/img/arrow-white.svg' width="300" height="300")
+video#hidden-source-video(width="300" height="300" autoplay)

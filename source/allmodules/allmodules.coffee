@@ -1,28 +1,32 @@
 import configmodule from "./configmodule"
 import debugmodule from "./debugmodule"
-import filtersettingsmodule from "./filtersettingsmodule"
-import footermodule from "./footermodule"
 import imageselectmodule from "./imageselectmodule"
+import layoutmanagermodule from "./layoutmanagermodule"
 import menumodule from "./menumodule"
+import outputfiltermodule from "./outputfiltermodule"
 import outputimagemodule from "./outputimagemodule"
+import postprocessimagemodule from "./postprocessimagemodule"
+import postprocessmodule from "./postprocessmodule"
+import sourcefiltermodule from "./sourcefiltermodule"
 import sourceimagemodule from "./sourceimagemodule"
 import svgiconsmodule from "./svgiconsmodule"
 import transformmodule from "./transformmodule"
-import upbuttonmodule from "./upbuttonmodule"
 import vanillautilmodule from "./vanillautilmodule"
 
 Modules = {
     configmodule,
     debugmodule,
-    filtersettingsmodule,
-    footermodule,
     imageselectmodule,
+    layoutmanagermodule,
     menumodule,
+    outputfiltermodule,
     outputimagemodule,
+    postprocessimagemodule,
+    postprocessmodule,
+    sourcefiltermodule,
     sourceimagemodule,
     svgiconsmodule,
     transformmodule,
-    upbuttonmodule,
     vanillautilmodule,
 }
 

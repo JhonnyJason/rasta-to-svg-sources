@@ -1,8 +1,7 @@
 import Modules from "./allmodules"
-import domconnect from "./domconnect"
+import domconnect from "./indexdomconnect"
 
 global.allModules = Modules
-
 
 window.onload = ->
     domconnect.initialize()
@@ -11,8 +10,7 @@ window.onload = ->
     appStartup()
     return
 
-
 appStartup = ->
-    ## which modules shall be kickstarted?
+    Modules.layoutmanagermodule.checkPossibleLayout()
     Modules.transformmodule.act()
     return

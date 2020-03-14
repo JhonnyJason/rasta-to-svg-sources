@@ -10,51 +10,66 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
-imageselect = null
-imageselectInput = null
-captureIcon = null
+source = null
 
 ############################################################
-source = null
+currentMode = "image"
 
 ############################################################
 imageselectmodule.initialize = () ->
     log "imageselectmodule.initialize"
     source = allModules.sourceimagemodule
     
-    imageselect = document.getElementById("imageselect")
-    imageselectInput = document.getElementById("imageselect-input")
-    captureIcon = document.getElementById("capture-icon")
-
-    # imageselectInput.addEventListener("change", imageselectInputChanged)
-    # captureIcon.addEventListener("click", captureIconClicked)
-
-    # imageselect.classList.add("image")
+    #region addEventListeners
+    imageselectInput.addEventListener("change", imageselectInputChanged)
+    captureButton.addEventListener("click", captureButtonClicked)
+    resumeButton.addEventListener("click", resumeButtonClicked)
+    #endregion
     return
 
 ############################################################
+#region eventHandlers
 imageselectInputChanged = ->
     log "imageselectInputChanged"
     file = imageselectInput.files[0]
     if file then source.setAsSourceFile(file)
     return
 
-captureIconClicked = ->
+captureButtonClicked = ->
     log "captureIconClicked"
     source.captureCamImage()
     return
 
+resumeButtonClicked = ->
+    log "captureIconClicked"
+    source.resumeVideo()
+    return
+#endregion
+
 ############################################################
 imageselectmodule.setMode = (label) ->
     log "imageselectmodule.setMode"
+    currentMode = label
+    if label == "cam-captured"
+        imageselectArea.className = "cam-captured"
+        return
     if label == "cam"
-        imageselect.classList.add("cam")
-        imageselect.classList.remove("image")
+        imageselectArea.className = "cam"
         return
     if label == "image"
-        imageselect.classList.add("image")
-        imageselect.classList.remove("cam")
+        imageselectArea.className = "image"
         return
     return
+
+imageselectmodule.toggleVideoCapture = ->
+    log "imageselectmodule.toggleVideoCapture"
+    if currentMode == "cam-captured"
+        source.resumeVideo()
+        return
+    if currentMode == "cam"
+        source.captureCamImage()
+        return
+    return
+
 
 module.exports = imageselectmodule

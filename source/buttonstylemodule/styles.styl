@@ -1,0 +1,43 @@
+// buttonstyle styles
+button-overlay-color = #fff
+overlay-border-radius = 12px
+
+transition-duration = 0.3s
+
+//-############################################################
+.click-button
+    position:relative
+    top:0
+    left:0
+    display:inline-block
+    transition: all .5s
+
+
+.click-button::after
+    content:""
+    width:100%
+    height:100%
+    position:absolute
+    top:0
+    left:0
+    border-radius:overlay-border-radius
+    display:inline-block
+    z-index:-1
+    transform: scaleX(1.8) scaleY(1.8)
+    opacity:0
+    transition: all transition-duration 
+    background: button-overlay-color
+
+.click-button:active::after
+    z-index: 1
+    transform: scaleX(0.0) scaleY(0.0)
+    opacity: 0.8
+    transition all 0s
+
+
+.click-button:disabled
+    color: #888
+    background-color: #eee
+    filter grayscale(100%)
+.click-button:disabled::after
+    display: none

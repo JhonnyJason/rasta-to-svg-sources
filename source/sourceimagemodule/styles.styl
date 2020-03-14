@@ -1,8 +1,16 @@
 // sourceimage styles
-#sourceimage
+#sourceimage-content-frame
+    display none
+
+.view-source
+    #sourceimage-content-frame
+        display block
+
+#sourceimage-canvas
     background-color rgba(255, 0, 0, 0.2)
-    height: 300px
-    width: 300px
+    width: canvas-size
+    height: canvas-size
+    @extends .center-absolute-x
 
 #hidden-source-image
     display none
