@@ -51,13 +51,30 @@ menumodule.initialize = () ->
 setActiveSource = (label) ->
     log "setActiveSource"
     if label == "image"
-        imageSelectButton.className = "active"
-        camImageButton.className = ""
-        return
+        imageSelectButton.classList.add "active"
+        camImageButton.classList.remove "active"
     if label == "cam"
-        camImageButton.className = "active"
-        imageSelectButton.className = ""
-        return
+        camImageButton.classList.add "active"
+        imageSelectButton.classList.remove "active"
+
+    outputImageButton.classList.remove "active"
+    postProcessButton.classList.remove "active"
+    return
+
+setActiveOutput = ->
+    log "setActiveOutput"
+    imageSelectButton.classList.remove "active"
+    camImageButton.classList.remove "active"
+    outputImageButton.classList.add "active"
+    postProcessButton.classList.remove "active"
+    return
+
+setActivePostprocess = ->
+    log "setActivePostprocess"
+    imageSelectButton.classList.remove "active"
+    camImageButton.classList.remove "active"
+    outputImageButton.classList.remove "active"
+    postProcessButton.classList.add "active"
     return
 
 ############################################################
@@ -94,6 +111,7 @@ toggleSourceFilterButtonClicked = ->
 ############################################################
 outputImageButtonClicked = ->
     log "outputImageButtonClicked"
+    setActiveOutput()
     layoutmanager.viewOutput()
     return
 
@@ -109,6 +127,7 @@ toggleOutputFilterButtonClicked = ->
 ############################################################
 postProcessButtonClicked = ->
     log "postProcessButtonClicked"
+    setActivePostprocess()
     layoutmanager.viewPostProcess()
     return
 

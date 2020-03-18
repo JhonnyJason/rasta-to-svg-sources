@@ -24,7 +24,7 @@ framerate = 24
 intervalId = 0
 
 videoDevice = null
-redrawImage = new Image()
+videoCaptureContext = null
 context = null
 
 activeSource = "image"
@@ -51,23 +51,16 @@ sourceimagemodule.initialize = () ->
 #region drawFunctions
 drawImageToContext = ->
     log "drawImage"
-    context.clearRect(0,0,canvasWidth, canvasHeight)
+    context.clearRect(0,0, canvasWidth, canvasHeight)
     context.drawImage(hiddenSourceImage, 0, 0, canvasWidth, canvasHeight)
-    captureRedrawImage()
     return
 
 drawVideoToContext = ->
     context.clearRect(0,0,canvasWidth, canvasHeight)
     context.drawImage(hiddenSourceVideo, 0, 0, canvasWidth, canvasHeight)
-    captureRedrawImage()
     return
 
 ############################################################
-captureRedrawImage = ->
-    dataURL = sourceimageCanvas.toDataURL("image/png")
-    redrawImage.src = dataURL
-    return
-
 imageLoaded = ->
     log "imageLoaded"
     drawImageToContext()
@@ -77,12 +70,14 @@ imageLoaded = ->
 ############################################################
 startVideoDrawing = ->
     log "startVideoDrawing"
+    hiddenSourceVideo.play()
     return if intervalId
     intervalId = setInterval(drawVideoToContext, 1.0 / framerate)
     return
 
 stopVideoDrawing = ->
     log "stopVideoDrawing"
+    hiddenSourceVideo.pause()
     if intervalId
         clearInterval(intervalId)
         intervalId = 0
@@ -132,9 +127,10 @@ stopCam = ->
 ############################################################
 #region exposedFunctions
 sourceimagemodule.setContextFilter = (filter) ->
+    log "sourceimagemodule.setContextFilter"
     context.filter = filter
-    context.clearRect(0,0,canvasWidth, canvasHeight)
-    context.drawImage(redrawImage, 0, 0, canvasWidth, canvasHeight)
+    if activeSource == "image" then drawImageToContext()
+    if activeSource == "cam" then drawVideoToContext()
     return
 
 sourceimagemodule.getImageData = ->

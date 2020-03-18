@@ -1,9 +1,13 @@
 // outputimage styles
 #outputimage-content-frame
     display none
-    background-color rgba(0, 255, 0, 0.2)
-
 
 .view-output
     #outputimage-content-frame
         display block
+
+#outputimage-canvas
+    background-color rgba(0, 255, 0, 0.2)
+    width: canvas-size
+    height: canvas-size
+    @extends .center-absolute-x

@@ -9,13 +9,13 @@ debugmodule.modulesToDebug =
     unbreaker: true
     # configmodule: true
     # headermodule: true
-    imageselectmodule: true
+    # imageselectmodule: true
     # layoutmanagermodule: true
     # menumodule: true
     # outputfiltermodule: true
-    # outputimagemodule: true
+    outputimagemodule: true
     # sourcefiltermodule: true
-    sourceimagemodule: true
+    # sourceimagemodule: true
     # transformmodule:true
 
 export default debugmodule

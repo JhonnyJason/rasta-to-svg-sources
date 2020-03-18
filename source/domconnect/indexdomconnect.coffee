@@ -3,6 +3,7 @@ indexdomconnect = {name: "indexdomconnect"}
 ############################################################
 indexdomconnect.initialize = () ->
     global.postprocessControl = document.getElementById("postprocess-control")
+    global.outputimageCanvas = document.getElementById("outputimage-canvas")
     global.outputfilterControl = document.getElementById("outputfilter-control")
     global.blurInput = document.getElementById("blur-input")
     global.contrastInput = document.getElementById("contrast-input")

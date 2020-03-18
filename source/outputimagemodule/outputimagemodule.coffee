@@ -14,16 +14,14 @@ canvasWidth = 300
 canvasHeight = 300
 
 ############################################################
-canvas = null
 context = null
 
 ############################################################
 outputimagemodule.initialize = () ->
     log "outputimagemodule.initialize"
-    # canvas = document.getElementById("outputimage")
-    # canvas.width = canvasWidth
-    # canvas.height = canvasHeight
-    # context = canvas.getContext("2d")
+    outputimageCanvas.width = canvasWidth
+    outputimageCanvas.height = canvasHeight
+    context = outputimageCanvas.getContext("2d")
     return
 
 ############################################################
