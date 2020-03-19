@@ -7,7 +7,8 @@ canvas-size = 300px
 CD color variables
 ==========================================================*/
 color-dark = #012
-
+color-dark-bg = alpha(color-dark, 0.9)
+color-light-bg = alpha(color-dark, 0.3)
 // :root
 //     --path-fill: orange
 //     --path-stroke: black
@@ -53,13 +54,24 @@ Global Element Style
 
 .image-block
     width: 100%
-    margin-top 20px
-    margin-bottom: 20px
     position relative
-    height canvas-size
+    padding-bottom 10px
+    box-sizing: border-box
+    background-color color-dark-bg
+    height canvas-size + 10px
 
 .center-absolute-x
     position absolute
-    top 0
     left 50%
     transform translateX(-50%)
+
+.center-absolute-xy
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+
+.center-absolute-y
+    position absolute
+    top 50%
+    transform translateY(-50%)

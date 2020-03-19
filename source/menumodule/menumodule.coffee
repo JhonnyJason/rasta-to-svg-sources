@@ -11,6 +11,7 @@ print = (arg) -> console.log(arg)
 
 ############################################################
 #region localModules
+state = null
 source = null
 output = null
 post = null
@@ -21,8 +22,13 @@ layoutmanager = null
 #endregion
 
 ############################################################
+menuState = 
+    imageSelectActive: true
+
+############################################################
 menumodule.initialize = () ->
     log "menumodule.initialize"
+    state = allModules.uistatemodule
     source = allModules.sourceimagemodule
     output = allModules.outputimagemodule
     post = allModules.postprocessimagemodule
@@ -30,6 +36,11 @@ menumodule.initialize = () ->
     outputfilter = allModules.outputfiltermodule
     postprocess = allModules.postprocessmodule
     layoutmanager = allModules.layoutmanagermodule
+
+    savedState = state.getState().menuState
+    if savedState then menuState = savedState
+
+    applyState()
 
     #region addingEventListeners
     viewAllButton.addEventListener("click", vieAllButtonClicked)
@@ -48,34 +59,121 @@ menumodule.initialize = () ->
     
 ############################################################
 #region internalFunctions
+applyState = ->
+    log "applyState"
+
+    olog menuState
+    ############################################################
+    if menuState.viewAllActive
+        viewAllButton.classList.add "active"
+    else 
+        viewAllButton.classList.remove "active"
+    
+    ############################################################
+    if menuState.imageSelectActive
+        imageSelectButton.classList.add "active"
+    else 
+        imageSelectButton.classList.remove "active"
+    
+    if menuState.camImageActive
+        camImageButton.classList.add "active"
+    else 
+        camImageButton.classList.remove "active"
+
+    if menuState.sourceFilterActive
+        toggleSourceFilterButton.classList.add "active"
+    else
+        toggleSourceFilterButton.classList.remove "active"
+
+    ############################################################
+    if menuState.outputImageActive
+        outputImageButton.classList.add "active"
+    else 
+        outputImageButton.classList.remove "active"
+    
+    if menuState.outputFilterActive
+        toggleOutputFilterButton.classList.add "active"
+    else
+        toggleOutputFilterButton.classList.remove "active"
+    
+    ############################################################
+    if menuState.postProcessActive
+        postProcessButton.classList.add "active"
+    else
+        postProcessButton.classList.remove "active"
+
+    if menuState.processSettingsActive
+        toggleProcessSettingsButton.classList.add "active"
+    else
+        toggleProcessSettingsButton.classList.remove "active"
+
+    return
+
+saveState = ->
+    log "saveState"
+    state.saveMenuState(menuState)
+    return
+
+############################################################
+#region UIStateSetter
 setActiveSource = (label) ->
     log "setActiveSource"
     if label == "image"
-        imageSelectButton.classList.add "active"
-        camImageButton.classList.remove "active"
+        menuState.imageSelectActive = true
+        menuState.camImageActive = false
     if label == "cam"
-        camImageButton.classList.add "active"
-        imageSelectButton.classList.remove "active"
+        menuState.camImageActive = true
+        menuState.imageSelectActive = false
 
-    outputImageButton.classList.remove "active"
-    postProcessButton.classList.remove "active"
+    menuState.outputImageActive = false
+    menuState.postProcessActive = false
+    
+    applyState()
+    saveState()
     return
 
 setActiveOutput = ->
     log "setActiveOutput"
-    imageSelectButton.classList.remove "active"
-    camImageButton.classList.remove "active"
-    outputImageButton.classList.add "active"
-    postProcessButton.classList.remove "active"
+    menuState.outputImageActive = true
+    menuState.imageSelectActive = false
+    menuState.camImageActive = false
+    menuState.postProcessActive = false
+    applyState()
+    saveState()
     return
 
 setActivePostprocess = ->
     log "setActivePostprocess"
-    imageSelectButton.classList.remove "active"
-    camImageButton.classList.remove "active"
-    outputImageButton.classList.remove "active"
-    postProcessButton.classList.add "active"
+    menuState.postProcessActive = true
+    menuState.imageSelectActive = false
+    menuState.camImageActive = false
+    menuState.outputImageActive = false
+    applyState()
+    saveState()
     return
+
+setSourceFilterActiveness = (activeness) ->
+    log "setSourceFilterActiveness"
+    menuState.sourceFilterActive = activeness
+    applyState()
+    saveState()
+    return
+
+setOutputFilterActiveness = (activeness) ->
+    log "setOutputFilterActiveness"
+    menuState.outputFilterActive = activeness
+    applyState()
+    saveState()
+    return
+
+setProcessSettingsActiveness = (activeness) ->
+    log "setProcessSettingsActiveness"
+    menuState.processSettingsActive = activeness
+    applyState()
+    saveState()
+    return
+
+#endregion
 
 ############################################################
 #region eventHandlers
@@ -87,25 +185,23 @@ vieAllButtonClicked = ->
 ############################################################
 imageSelectButtonClicked = ->
     log "imageSelectButtonClicked"
-    activeSource = await source.setSource("image")
-    setActiveSource(activeSource)
+    activeSource = await source.setSource "image"
+    setActiveSource activeSource
     layoutmanager.viewSource()
     return
 
 camImageButtonClicked = ->
     log "camImageButtonClicked"
-    activeSource = await source.setSource("cam")
-    setActiveSource(activeSource)
+    activeSource = await source.setSource "cam"
+    setActiveSource activeSource
     layoutmanager.viewSource()
     return
 
 toggleSourceFilterButtonClicked = ->
     log "filterSettingsIconClicked"
     isHidden = sourcefilter.toggleHidden()
-    if isHidden
-        toggleSourceFilterButton.classList.remove("active")
-    else
-        toggleSourceFilterButton.classList.add("active")
+    if isHidden then setSourceFilterActiveness false
+    else setSourceFilterActiveness true
     return
 
 ############################################################
@@ -118,10 +214,8 @@ outputImageButtonClicked = ->
 toggleOutputFilterButtonClicked = ->
     log "toggleOutputFilterButtonClicked"
     isHidden = outputfilter.toggleHidden()
-    if isHidden
-        toggleOutputFilterButton.classList.remove("active")
-    else
-        toggleOutputFilterButton.classList.add("active")
+    if isHidden then setOutputFilterActiveness false
+    else setOutputFilterActiveness true
     return
 
 ############################################################
@@ -134,10 +228,8 @@ postProcessButtonClicked = ->
 toggleProcessSettingsButtonClicked = ->
     log "toggleProcessSettingsButtonClicked"
     isHidden = postprocess.toggleHiddenControls()
-    if isHidden
-        toggleProcessSettingsButton.classList.remove("active")
-    else
-        toggleProcessSettingsButton.classList.add("active")
+    if isHidden then setProcessSettingsActiveness false
+    else setProcessSettingsActiveness true
     return
 
 #endregion
@@ -147,12 +239,9 @@ toggleProcessSettingsButtonClicked = ->
 ############################################################
 menumodule.setViewAllButtonActive = (activeness) ->
     log "menumodule.setViewAllButtonActive"
-    if activeness ==  true
-        viewAllButton.className = "active"
-        return
-    if activeness == false
-        viewAllButton.className = ""
-        return
+    menuState.viewAllActive = activeness
+    applyState()
+    savedState()
     return
 
 module.exports = menumodule

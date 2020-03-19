@@ -1,7 +1,21 @@
 // postprocessimage styles
 #postprocessimage-content-frame
     display none
-    background-color yellow
+
+#postprocessimage-background
+    width: canvas-size
+    height: canvas-size
+    @extends .center-absolute-xy
+
+#postprocessimage-result-svg
+    background-color: transparent
+    width: canvas-size
+    height: canvas-size
+    @extends .center-absolute-xy
+
+    rect
+        fill transparent
+        stroke blue
 
 .view-postprocess
     #postprocessimage-content-frame

@@ -7,10 +7,12 @@ import outputfiltermodule from "./outputfiltermodule"
 import outputimagemodule from "./outputimagemodule"
 import postprocessimagemodule from "./postprocessimagemodule"
 import postprocessmodule from "./postprocessmodule"
+import processpipelinemodule from "./processpipelinemodule"
 import sourcefiltermodule from "./sourcefiltermodule"
 import sourceimagemodule from "./sourceimagemodule"
 import svgiconsmodule from "./svgiconsmodule"
 import transformmodule from "./transformmodule"
+import uistatemodule from "./uistatemodule"
 import vanillautilmodule from "./vanillautilmodule"
 
 Modules = {
@@ -23,10 +25,12 @@ Modules = {
     outputimagemodule,
     postprocessimagemodule,
     postprocessmodule,
+    processpipelinemodule,
     sourcefiltermodule,
     sourceimagemodule,
     svgiconsmodule,
     transformmodule,
+    uistatemodule,
     vanillautilmodule,
 }
 

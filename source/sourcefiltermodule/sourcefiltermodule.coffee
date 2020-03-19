@@ -10,13 +10,15 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+processPipeline = null
 transform = null
+state = null
 
 ############################################################
 defaultContextConfig = 
-    blur: "1"
-    contrast: "250"
-    saturate: "200"
+    blur: "0.7"
+    contrast: "300"
+    saturate: "100"
     grayscale: true
     invert: true
 contextConfigObject = Object.assign({}, defaultContextConfig)
@@ -27,7 +29,9 @@ isHidden = true
 ############################################################
 sourcefiltermodule.initialize = () ->
     log "sourcefiltermodule.initialize"
+    processPipeline = allModules.processpipelinemodule
     transform = allModules.transformmodule
+    state = allModules.uistatemodule
 
     blurInput.addEventListener("change", blurInputChanged)
     contrastInput.addEventListener("change", contrastInputChanged)
@@ -35,6 +39,14 @@ sourcefiltermodule.initialize = () ->
     grayscaleInput.addEventListener("change", grayscaleInputChanged)
     invertInput.addEventListener("change", invertInputChanged)
     sourcefilterResetButton.addEventListener("click", resetButtonClicked)
+
+    savedConfig = state.getState().sourceFilterConfig
+    if savedConfig then contextConfigObject = savedConfig
+    
+    savedHiddenState = state.getState().sourceFilterHidden
+    if typeof savedHiddenState == "boolean" and savedHiddenState == false
+        sourcefilterControl.className = ""
+        isHidden = savedHiddenState
 
     assignCurrentValues()
     transform.adjustContextFilter(contextConfigObject)
@@ -60,8 +72,9 @@ assignCurrentValues = ->
 
 propagateValues = ->
     log "propagateValues"
+    state.saveSourceFilterState(contextConfigObject)
     transform.adjustContextFilter(contextConfigObject)
-    transform.act()
+    processPipeline.act()
     return
 
 ############################################################
@@ -118,6 +131,7 @@ sourcefiltermodule.toggleHidden = ->
     else
         sourcefilterControl.className = "hidden"
         isHidden = true
+    state.saveSourceFilterHiddenState(isHidden)
     return isHidden
 
 module.exports = sourcefiltermodule

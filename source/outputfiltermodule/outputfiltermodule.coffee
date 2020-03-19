@@ -10,15 +10,14 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+processPipeline = null
 transform = null
+state = null
 
 ############################################################
 defaultContextConfig = 
-    blur: "1"
-    contrast: "250"
-    saturate: "200"
-    grayscale: true
-    invert: true
+    scaleValues: true
+    binarizeThreshold: "80"
 contextConfigObject = Object.assign({}, defaultContextConfig)
 
 ############################################################
@@ -27,20 +26,28 @@ isHidden = true
 ############################################################
 outputfiltermodule.initialize = () ->
     log "outputfiltermodule.initialize"
+    processPipeline = allModules.processpipelinemodule
     transform = allModules.transformmodule
+    state = allModules.uistatemodule
 
-    # blurInput.addEventListener("change", blurInputChanged)
-    # contrastInput.addEventListener("change", contrastInputChanged)
-    # saturateInput.addEventListener("change", saturateInputChanged)
-    # grayscaleInput.addEventListener("change", grayscaleInputChanged)
-    # invertInput.addEventListener("change", invertInputChanged)
-    # resetButton.addEventListener("click", resetButtonClicked)
+    scaleValuesInput.addEventListener("change", scaleValuesInputChanged)
+    binarizeThresholdInput.addEventListener("change", binarizeThresholdInputChanged)
+    outputfilterResetButton.addEventListener("click", resetButtonClicked)
 
-    # assignCurrentValues()
-    # transform.adjustContextFilter(contextConfigObject)
+    savedConfig = state.getState().outputFilterConfig
+    if savedConfig then contextConfigObject = savedConfig
+
+    savedHiddenState = state.getState().outputFilterHidden
+    if typeof savedHiddenState == "boolean" and savedHiddenState == false
+        outputfilterControl.className = ""
+        isHidden = savedHiddenState
+
+    assignCurrentValues()
+    transform.adjustTransformationPipeline(contextConfigObject)
     return
 
 ############################################################
+#region internalFunctions
 resetValues = ->
     log "resetValues"
     contextConfigObject = Object.assign({}, defaultContextConfig)
@@ -50,53 +57,30 @@ resetValues = ->
 
 assignCurrentValues = ->
     log "assignCurrentValues"
-    blurInput.value = contextConfigObject.blur
-    contrastInput.value = contextConfigObject.contrast
-    saturateInput.value = contextConfigObject.saturate
-    grayscaleInput.checked = contextConfigObject.grayscale
-    invertInput.checked = contextConfigObject.invert
+    scaleValuesInput.checked = contextConfigObject.scaleValues
+    binarizeThresholdInput.value = contextConfigObject.binarizeThreshold
     return
 
 propagateValues = ->
     log "propagateValues"
-    transform.adjustContextFilter(contextConfigObject)
-    transform.act()
+    state.saveOutputFilterState(contextConfigObject)
+    transform.adjustTransformationPipeline(contextConfigObject)
+    processPipeline.act()
     return
 
 ############################################################
 #region eventListeners
-blurInputChanged = ->
-    log "blurInputChanged"
-    value = blurInput.value
-    contextConfigObject.blur = value
+scaleValuesInputChanged = ->
+    log "scaleValuesInputChanged"
+    value = scaleValuesInput.checked
+    contextConfigObject.scaleValues = value
     propagateValues()
     return
 
-contrastInputChanged = ->
-    log "contrastInputChanged"
-    value = contrastInput.value
-    contextConfigObject.contrast = value
-    propagateValues()
-    return
-
-saturateInputChanged = ->
-    log "saturateInputChanged"
-    value = saturateInput.value
-    contextConfigObject.saturate = value
-    propagateValues()
-    return
-
-grayscaleInputChanged = ->
-    log "grayscaleInputChanged"
-    value = grayscaleInput.checked
-    contextConfigObject.grayscale = value
-    propagateValues()
-    return
-
-invertInputChanged = ->
-    log "invertInputChanged"
-    value = invertInput.checked
-    contextConfigObject.invert = value
+binarizeThresholdInputChanged = ->
+    log "binarizeThresholdInputChanged"
+    value = binarizeThresholdInput.value
+    contextConfigObject.binarizeThreshold = value
     propagateValues()
     return
 
@@ -106,16 +90,19 @@ resetButtonClicked = ->
     return
 #endregion
 
+#endregion
+
 ############################################################
 outputfiltermodule.toggleHidden = ->
     log "outputfiltermodule.setActive"
     if isHidden
         outputfilterControl.classList.remove("hidden")
         isHidden = false
-        return false
     else
         outputfilterControl.classList.add("hidden")
         isHidden = true
-        return true
+
+    state.saveOutputFilterHiddenState(isHidden)
+    return isHidden
 
 module.exports = outputfiltermodule

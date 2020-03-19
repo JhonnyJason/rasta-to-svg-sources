@@ -2,13 +2,13 @@
 #sourcefilter-control.hidden
     .line
         label blur (px)
-        input#blur-input(type="number")
+        input#blur-input(type="number" min="0" max="66" step="0.1")
     .line
         label contrast (%)
-        input#contrast-input(type="number")
+        input#contrast-input(type="number" min="0" max="1000" step="1")
     .line
         label saturate (%)
-        input#saturate-input(type="number")
+        input#saturate-input(type="number" min="0" max="1000" step="1")
     .line
         label grayscale
         input#grayscale-input(type="checkbox")

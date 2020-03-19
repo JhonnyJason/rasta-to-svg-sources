@@ -12,5 +12,5 @@ window.onload = ->
 
 appStartup = ->
     Modules.layoutmanagermodule.checkPossibleLayout()
-    Modules.transformmodule.act()
+    Modules.processpipelinemodule.act()
     return

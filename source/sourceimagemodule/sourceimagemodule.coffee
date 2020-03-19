@@ -12,6 +12,7 @@ print = (arg) -> console.log(arg)
 ############################################################
 transform = null
 imageselect = null
+processPipeline = null
 
 ############################################################
 #region definitions
@@ -32,6 +33,7 @@ activeSource = "image"
 ############################################################
 sourceimagemodule.initialize = () ->
     log "sourceimagemodule.initialize"
+    processPipeline = allModules.processpipelinemodule
     transform = allModules.transformmodule
     imageselect = allModules.imageselectmodule
 
@@ -51,11 +53,13 @@ sourceimagemodule.initialize = () ->
 #region drawFunctions
 drawImageToContext = ->
     log "drawImage"
+    #takes 0.3-3ms
     context.clearRect(0,0, canvasWidth, canvasHeight)
     context.drawImage(hiddenSourceImage, 0, 0, canvasWidth, canvasHeight)
     return
 
 drawVideoToContext = ->
+    #takes 0.3-3ms
     context.clearRect(0,0,canvasWidth, canvasHeight)
     context.drawImage(hiddenSourceVideo, 0, 0, canvasWidth, canvasHeight)
     return
@@ -64,7 +68,7 @@ drawVideoToContext = ->
 imageLoaded = ->
     log "imageLoaded"
     drawImageToContext()
-    transform.act()
+    processPipeline.act()
     return
 
 ############################################################
@@ -147,7 +151,7 @@ sourceimagemodule.captureCamImage = ->
     return unless activeSource == "cam"
     imageselect.setMode("cam-captured")
     stopVideoDrawing()
-    transform.act()
+    processPipeline.act()
     return
 
 sourceimagemodule.resumeVideo = ->

@@ -1,19 +1,10 @@
 //- filtersettings structure
 #outputfilter-control.hidden
     .line
-        label blur (px)
-        input#blur-input(type="number")
+        label scale values
+        input#scale-values-input(type="checkbox")
     .line
-        label contrast (%)
-        input#contrast-input(type="number")
-    .line
-        label saturate (%)
-        input#saturate-input(type="number")
-    .line
-        label grayscale
-        input#grayscale-input(type="checkbox")
-    .line
-        label invert
-        input#invert-input(type="checkbox")
+        label binarize threshold (%)
+        input#binarize-threshold-input(type="number" min="0" max="100" step="1")
     .line
         button#outputfilter-reset-button.click-button RESET

@@ -13,7 +13,9 @@ debugmodule.modulesToDebug =
     # layoutmanagermodule: true
     # menumodule: true
     # outputfiltermodule: true
-    outputimagemodule: true
+    # outputimagemodule: true
+    # postprocessimagemodule: true
+    # processpipelinemodule: true
     # sourcefiltermodule: true
     # sourceimagemodule: true
     # transformmodule:true

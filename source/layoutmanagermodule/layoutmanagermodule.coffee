@@ -10,8 +10,17 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+state = null
+
+############################################################
+viewState = null
+
+############################################################
 layoutmanagermodule.initialize = () ->
     log "layoutmanagermodule.initialize"
+    state = allModules.uistatemodule
+    viewState = state.getState().viewState
+    if viewState then document.body.className = viewState 
     return
 
 ############################################################
@@ -21,22 +30,30 @@ layoutmanagermodule.checkPossibleLayout = ->
 
 layoutmanagermodule.viewAll = ->
     log "layoutmanagermodule.viewAll"
-    document.body.className = "view-all"
+    viewState = "view-all"
+    document.body.className = viewState
+    state.saveViewState viewState
     return
 
 layoutmanagermodule.viewSource = ->
     log "layoutmanagermodule.viewSource"
-    document.body.className = "view-source"
+    viewState = "view-source"
+    document.body.className = viewState
+    state.saveViewState viewState
     return
 
 layoutmanagermodule.viewOutput = ->
     log "layoutmanagermodule.viewOutput"
-    document.body.className = "view-output"
+    viewState = "view-output"
+    document.body.className = viewState
+    state.saveViewState viewState
     return
 
 layoutmanagermodule.viewPostProcess = ->
     log "layoutmanagermodule.viewPostProcess"
-    document.body.className = "view-postprocess"
+    viewState = "view-postprocess"
+    document.body.className = viewState
+    state.saveViewState viewState
     return
 
 module.exports = layoutmanagermodule
