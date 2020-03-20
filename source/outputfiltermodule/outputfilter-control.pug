@@ -1,10 +1,12 @@
 //- filtersettings structure
-#outputfilter-control.hidden
+#outputfilter-control.filter-controls.hidden
     .line
-        label scale values
-        input#scale-values-input(type="checkbox")
-    .line
-        label binarize threshold (%)
+        label Threshold (%)
         input#binarize-threshold-input(type="number" min="0" max="100" step="1")
     .line
-        button#outputfilter-reset-button.click-button RESET
+        input#binarize-threshold-range-input(type="range" min="0" max="100" step="1")
+    .line
+        label Scale Values
+        input#scale-values-input(type="checkbox")
+    .line
+        button#outputfilter-reset-button.click-button Default Settings

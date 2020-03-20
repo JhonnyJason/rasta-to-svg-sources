@@ -34,7 +34,7 @@ menumodule.initialize = () ->
     post = allModules.postprocessimagemodule
     sourcefilter = allModules.sourcefiltermodule
     outputfilter = allModules.outputfiltermodule
-    postprocess = allModules.postprocessmodule
+    postprocess = allModules.postprocesssettingsmodule
     layoutmanager = allModules.layoutmanagermodule
 
     savedState = state.getState().menuState

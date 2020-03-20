@@ -6,7 +6,7 @@ import menumodule from "./menumodule"
 import outputfiltermodule from "./outputfiltermodule"
 import outputimagemodule from "./outputimagemodule"
 import postprocessimagemodule from "./postprocessimagemodule"
-import postprocessmodule from "./postprocessmodule"
+import postprocesssettingsmodule from "./postprocesssettingsmodule"
 import processpipelinemodule from "./processpipelinemodule"
 import sourcefiltermodule from "./sourcefiltermodule"
 import sourceimagemodule from "./sourceimagemodule"
@@ -24,7 +24,7 @@ Modules = {
     outputfiltermodule,
     outputimagemodule,
     postprocessimagemodule,
-    postprocessmodule,
+    postprocesssettingsmodule,
     processpipelinemodule,
     sourcefiltermodule,
     sourceimagemodule,

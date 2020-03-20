@@ -32,6 +32,7 @@ outputfiltermodule.initialize = () ->
 
     scaleValuesInput.addEventListener("change", scaleValuesInputChanged)
     binarizeThresholdInput.addEventListener("change", binarizeThresholdInputChanged)
+    binarizeThresholdRangeInput.addEventListener("change", binarizeThresholdRangeInputChanged)
     outputfilterResetButton.addEventListener("click", resetButtonClicked)
 
     savedConfig = state.getState().outputFilterConfig
@@ -39,7 +40,7 @@ outputfiltermodule.initialize = () ->
 
     savedHiddenState = state.getState().outputFilterHidden
     if typeof savedHiddenState == "boolean" and savedHiddenState == false
-        outputfilterControl.className = ""
+        outputfilterControl.classList.remove "hidden"
         isHidden = savedHiddenState
 
     assignCurrentValues()
@@ -59,6 +60,7 @@ assignCurrentValues = ->
     log "assignCurrentValues"
     scaleValuesInput.checked = contextConfigObject.scaleValues
     binarizeThresholdInput.value = contextConfigObject.binarizeThreshold
+    binarizeThresholdRangeInput.value = contextConfigObject.binarizeThreshold
     return
 
 propagateValues = ->
@@ -77,9 +79,18 @@ scaleValuesInputChanged = ->
     propagateValues()
     return
 
+binarizeThresholdRangeInputChanged = ->
+    log "binarizeThresholdRangeInputChanged"
+    value = binarizeThresholdRangeInput.value
+    binarizeThresholdInput.value = value
+    contextConfigObject.binarizeThreshold = value
+    propagateValues()
+    return
+
 binarizeThresholdInputChanged = ->
     log "binarizeThresholdInputChanged"
     value = binarizeThresholdInput.value
+    binarizeThresholdRangeInput.value = value
     contextConfigObject.binarizeThreshold = value
     propagateValues()
     return

@@ -9,20 +9,30 @@ olog = (obj) -> log "\n" + ostr(obj)
 print = (arg) -> console.log(arg)
 #endregion
 
+############################################################
+#region internalProperties
 transform = null
 postProcess = null
 
-isToAct = false
-
+############################################################
+#region propertiesForActingCorrectly ;-)
 intervalId = null
+
+isToAct = false
+isToActAll = false
+isToActPostProcess = false
 
 pipelineStartTimeMS = 0
 pipelineStopTimeMS = 0
 
-multiplier = 10
+multiplier = 3
 minimalAdjustmentDistanceMS = 300
-minimalActFrequencyMS = 500
-actFrequencyMS = 1000
+minimalActFrequencyMS = 300
+actFrequencyMS = 300
+
+#endregion
+
+#endregion
 
 ############################################################
 processpipelinemodule.initialize = () ->
@@ -60,18 +70,37 @@ recalibrateFrequency = ->
 
 actNow = ->
     return unless isToAct
+    if isToActAll then actAll()
+    if isToActPostProcess then actPostProcess()
+    isToAct = false
+    return
+
+actAll = ->
     pipelineStartTimeMS = performance.now()
     transform.act()
     postProcess.act()
     pipelineStopTimeMS = performance.now()
     recalibrateFrequency()
-    isToAct = false
+    isToActAll = false
+    isToActPostProcess = false
+    return
+
+actPostProcess = ->
+    postProcess.act()
+    isToActPostProcess = false
     return
 
 ############################################################
 processpipelinemodule.act = ->
     log "processpipelinemodule.act"
     isToAct = true
+    isToActAll = true
+    return
+
+processpipelinemodule.actPostProcess = ->
+    log "processpipelinemodule.actPostProcess"
+    isToAct = true
+    isToActPostProcess = true
     return
 
 module.exports = processpipelinemodule

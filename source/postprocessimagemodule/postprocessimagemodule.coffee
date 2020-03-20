@@ -10,6 +10,9 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+settings = null
+
+############################################################
 width = 300
 height = 300
 
@@ -17,8 +20,6 @@ pixelsWithObjects = new Array(width*height)
 checkedPixels = new Array(width*height)
 
 processChannel = null
-
-minVolume = 100
 
 foundObjects = []
 
@@ -28,6 +29,7 @@ pixelsToCheck = []
 ############################################################
 postprocessimagemodule.initialize = () ->
     log "postprocessimagemodule.initialize"
+    settings = allModules.postprocesssettingsmodule
     return
 
 drawBestGuess = ->
@@ -74,8 +76,9 @@ findConnectedObjects = ->
 removeSmallObjects = ->
     log "removeSmallObjects"
     goodObjects = []
+    min = settings.getMinimalVolume()
     for element in foundObjects
-        goodObjects.push(element) if element.volume >= minVolume
+        goodObjects.push(element) if element.volume >= min
     foundObjects = goodObjects
     return
 

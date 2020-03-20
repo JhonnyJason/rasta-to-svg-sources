@@ -10,7 +10,6 @@ transition-duration = 0.3s
     top:0
     left:0
     display:inline-block
-    transition: all .5s
 
 
 .click-button::after
@@ -22,17 +21,15 @@ transition-duration = 0.3s
     left:0
     border-radius:overlay-border-radius
     display:inline-block
-    z-index:-1
     transform: scaleX(1.8) scaleY(1.8)
     opacity:0
-    transition: all transition-duration 
+    transition: opacity transition-duration, transform transition-duration 
     background: button-overlay-color
 
 .click-button:active::after
-    z-index: 1
     transform: scaleX(0.0) scaleY(0.0)
     opacity: 0.8
-    transition all 0s
+    transition opacity 0s, transform 0s
 
 
 .click-button:disabled

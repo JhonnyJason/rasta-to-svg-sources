@@ -1,19 +1,24 @@
 //- filtersettings structure
-#sourcefilter-control.hidden
+#sourcefilter-control.filter-controls.hidden
     .line
-        label blur (px)
+        label Blur (px)
         input#blur-input(type="number" min="0" max="66" step="0.1")
     .line
-        label contrast (%)
-        input#contrast-input(type="number" min="0" max="1000" step="1")
+        input#blur-range-input(type="range" min="0" max="66" step="0.1")
     .line
-        label saturate (%)
-        input#saturate-input(type="number" min="0" max="1000" step="1")
+        label Contrast (%)
+        input#contrast-input(type="number" min="0" max="2000" step="1")
     .line
-        label grayscale
+        input#contrast-range-input(type="range" min="0" max="2000" step="1")
+    .line
+        label Saturation (%)
+        input#saturate-input(type="number" min="0" max="2000" step="1")
+    .line
+        input#saturate-range-input(type="range" min="0" max="2000" step="1")
+    .line
+        label Invert
+        input#invert-input(type="checkbox")
+        label Grayscale
         input#grayscale-input(type="checkbox")
     .line
-        label invert
-        input#invert-input(type="checkbox")
-    .line
-        button#sourcefilter-reset-button.click-button RESET
+        button#sourcefilter-reset-button.click-button Default Settings

@@ -34,8 +34,11 @@ sourcefiltermodule.initialize = () ->
     state = allModules.uistatemodule
 
     blurInput.addEventListener("change", blurInputChanged)
+    blurRangeInput.addEventListener("change", blurRangeInputChanged)
     contrastInput.addEventListener("change", contrastInputChanged)
+    contrastRangeInput.addEventListener("change", contrastRangeInputChanged)
     saturateInput.addEventListener("change", saturateInputChanged)
+    saturateRangeInput.addEventListener("change", saturateRangeInputChanged)
     grayscaleInput.addEventListener("change", grayscaleInputChanged)
     invertInput.addEventListener("change", invertInputChanged)
     sourcefilterResetButton.addEventListener("click", resetButtonClicked)
@@ -45,7 +48,7 @@ sourcefiltermodule.initialize = () ->
     
     savedHiddenState = state.getState().sourceFilterHidden
     if typeof savedHiddenState == "boolean" and savedHiddenState == false
-        sourcefilterControl.className = ""
+        sourcefilterControl.classList.remove "hidden"
         isHidden = savedHiddenState
 
     assignCurrentValues()
@@ -64,8 +67,11 @@ resetValues = ->
 assignCurrentValues = ->
     log "assignCurrentValues"
     blurInput.value = contextConfigObject.blur
+    blurRangeInput.value = contextConfigObject.blur
     contrastInput.value = contextConfigObject.contrast
+    contrastRangeInput.value = contextConfigObject.contrast
     saturateInput.value = contextConfigObject.saturate
+    saturateRangeInput.value = contextConfigObject.saturate
     grayscaleInput.checked = contextConfigObject.grayscale
     invertInput.checked = contextConfigObject.invert
     return
@@ -79,23 +85,50 @@ propagateValues = ->
 
 ############################################################
 #region eventListeners
+blurRangeInputChanged = ->
+    log "blurRangeInputChanged"
+    value = blurRangeInput.value
+    blurInput.value = value
+    contextConfigObject.blur = value
+    propagateValues()
+    return
+
 blurInputChanged = ->
     log "blurInputChanged"
     value = blurInput.value
+    blurRangeInput.value = value
     contextConfigObject.blur = value
+    propagateValues()
+    return
+
+contrastRangeInputChanged = ->
+    log "contrastRangeInputChanged"
+    value = contrastRangeInput.value
+    contrastInput.value = value
+    contextConfigObject.contrast = value
     propagateValues()
     return
 
 contrastInputChanged = ->
     log "contrastInputChanged"
     value = contrastInput.value
+    contrastRangeInput.value = value
     contextConfigObject.contrast = value
+    propagateValues()
+    return
+
+saturateRangeInputChanged = ->
+    log "saturateRangeInputChanged"
+    value = saturateRangeInput.value
+    saturateInput.value = value
+    contextConfigObject.saturate = value
     propagateValues()
     return
 
 saturateInputChanged = ->
     log "saturateInputChanged"
     value = saturateInput.value
+    saturateRangeInput.value = value
     contextConfigObject.saturate = value
     propagateValues()
     return
@@ -126,10 +159,10 @@ resetButtonClicked = ->
 sourcefiltermodule.toggleHidden = ->
     log "sourcefiltermodule.toggleHidden"
     if isHidden
-        sourcefilterControl.className = ""
+        sourcefilterControl.classList.remove "hidden"
         isHidden = false
     else
-        sourcefilterControl.className = "hidden"
+        sourcefilterControl.classList.add "hidden"
         isHidden = true
     state.saveSourceFilterHiddenState(isHidden)
     return isHidden
