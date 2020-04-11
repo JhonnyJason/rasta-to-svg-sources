@@ -39,7 +39,6 @@ indexdomconnect.initialize = () ->
     global.toggleOutputFilterButton = document.getElementById("toggle-output-filter-button")
     global.postProcessButton = document.getElementById("post-process-button")
     global.toggleProcessSettingsButton = document.getElementById("toggle-process-settings-button")
-    console.log("-> used Elements available in their global variable!")
     return
     
 module.exports = indexdomconnect
